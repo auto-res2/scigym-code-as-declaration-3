@@ -311,7 +311,55 @@
                 "extension_points": [
                   "scigym.api.api.LLM"
                 ]
-              }
+              },
+              "reviews": [
+                {
+                  "commit": "0e16b17e01a3f917630dde94f5bab23a449d9d79",
+                  "observed": {
+                    "react-gpt-4.1-nano": "c9021381d2538da7b97dc633c7472756bbb15a1f2768d7882810d25b03a53989"
+                  },
+                  "inputs_sha256": "7bdf14fab44dbb7e3d39b8ce97daeca82e91b73eec8a8514efe89e00869160c2",
+                  "model": "vercel_ai_gateway/openai/gpt-6-luna",
+                  "findings": [
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:solve_instance / scigym.controller.Controller.__init__.task_difficulty",
+                      "statement": "エージェントに渡すタスク難度を `fully_observable` に設定しているが、宣言されていない。",
+                      "evidence": "observed: `\"task_difficulty\": \"fully_observable\"`"
+                    },
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:solve_instance / scigym.controller.Controller.__init__.test_memorize",
+                      "statement": "`test_memorize=False` として記憶テストを無効化しているが、この情報アクセス上の選択は宣言されていない。",
+                      "evidence": "コード: `test_memorize=False`"
+                    },
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:solve_instance / scigym.controller.Controller.__init__.customized_functions_path",
+                      "statement": "実験行動プロンプトとは別に `customized_functions_sim.md` を指定しているが、このモデルへの指示・利用可能な機能の選択は宣言されていない。",
+                      "evidence": "コード: `customized_functions_path=\"prompts/customized_functions_sim.md\"`"
+                    },
+                    {
+                      "kind": "unverified",
+                      "where": "src/evaluate.py:main",
+                      "statement": "宣言された airas-eval の `scigym_small` 採点がこの run で実行されたことは、提示コードと観測から確認できない。",
+                      "evidence": "コード: `report = json.loads((run_dir / \"evaluation\" / f\"scigym_{split}.json\").read_text())`"
+                    },
+                    {
+                      "kind": "unverified",
+                      "where": "src.react.OpenAICompatible.get_response / model",
+                      "statement": "Gateway が要求したモデル名どおりの実モデルを返したことは確認できず、観測されているのは要求モデル名だけである。",
+                      "evidence": "コード: `model=self.model_name`; observed: `model_name` は `openai/gpt-4.1-nano`"
+                    },
+                    {
+                      "kind": "unverified",
+                      "where": "src.react:Controller import / scigym.controller",
+                      "statement": "実行時に読み込まれた SciGym が宣言されたリポジトリ commit `88a7b936…` と一致することは確認できない。",
+                      "evidence": "observed: `scigym.controller` のファイル hash は記録されているが、commit 情報はない"
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "quoted_passage_ids": [
@@ -463,7 +511,61 @@
                 "extension_points": [
                   "scigym.api.api.LLM"
                 ]
-              }
+              },
+              "reviews": [
+                {
+                  "commit": "0e16b17e01a3f917630dde94f5bab23a449d9d79",
+                  "observed": {
+                    "react-gpt-4.1-mini": "e5183666200e5e9b8a160137091fc5f40d4385b7b6b8cacfd2a03c8e47b59b23"
+                  },
+                  "inputs_sha256": "013778d25f7f7c6da9975036120f50dcd3259b8849afa53b58cb443bbb303e78",
+                  "model": "vercel_ai_gateway/openai/gpt-6-luna",
+                  "findings": [
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:solve_instance",
+                      "statement": "Controller に `task_difficulty=\"fully_observable\"` を渡しており、エージェントの情報アクセス条件がこの値に決まっている。",
+                      "evidence": "observed: `scigym.controller.Controller.__init__` の `task_difficulty` が `fully_observable`"
+                    },
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:solve_instance",
+                      "statement": "Controller の `test_memorize` を `False` に固定しており、宣言にない実行条件を選んでいる。",
+                      "evidence": "コード: `test_memorize=False`"
+                    },
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:solve_instance",
+                      "statement": "モデルへの指示として `prompts/customized_functions_sim.md` を使っているが、宣言は `experiment_actions_perturb.md` のみを挙げている。",
+                      "evidence": "コード: `customized_functions_path=\"prompts/customized_functions_sim.md\"`"
+                    },
+                    {
+                      "kind": "undeclared",
+                      "where": "src/react.py:OpenAICompatible.get_response",
+                      "statement": "空応答の `finish_reason=\"length\"` 時に max_tokens を倍増し、上限を 131072 にする選択が宣言されていない。",
+                      "evidence": "コード: `max_tokens = min(max_tokens * 2, 131072)`"
+                    },
+                    {
+                      "kind": "contradiction",
+                      "where": "src/react.py:solve_instance (@claim c2)",
+                      "statement": "3 件で得る STE を、論文の全ベンチマーク平均値 0.6007 と直接比較する基準にしており、比較対象の集計範囲が一致しない。",
+                      "evidence": "passage s1.p6: “average ... across all benchmark instances”; c2: “SciGym-small の 3 件” と reference `0.6007`"
+                    },
+                    {
+                      "kind": "unverified",
+                      "where": "src/evaluate.py:main",
+                      "statement": "宣言された airas-eval の公式 Evaluator による採点実行は、提示コード・観測から確認できない。",
+                      "evidence": "コードは `evaluation/scigym_{split}.json` を読み込むだけで、評価レポートを生成する呼び出しは示されていない。"
+                    },
+                    {
+                      "kind": "unverified",
+                      "where": "observed: scigym.api.api.LLM.__init__.model_name",
+                      "statement": "Gateway に指定名を送ったことは確認できるが、実際に返答したモデルの同一性や重みは確認できない。",
+                      "evidence": "observed: `model_name` は `openai/gpt-4.1-mini`。接続先は `ai-gateway.vercel.sh` だが、解決されたモデルの観測はない。"
+                    }
+                  ]
+                }
+              ]
             }
           ],
           "quoted_passage_ids": [
