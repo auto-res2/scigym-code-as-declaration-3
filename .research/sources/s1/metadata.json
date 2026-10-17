@@ -1,0 +1,34 @@
+{
+  "title": "Measuring Scientific Capabilities of Language Models with a Systems Biology Dry Lab",
+  "authors": [
+    "Haonan Duan",
+    "Stephen Zhewen Lu",
+    "Caitlin Fiona Harrigan",
+    "Nishkrit Desai",
+    "Jiarui Lu",
+    "Michał Koziarski",
+    "Leonardo Cotta",
+    "Chris J. Maddison"
+  ],
+  "abstract": "Designing experiments and result interpretations are core scientific competencies, particularly in biology, where researchers perturb complex systems to uncover the underlying systems. Recent efforts to evaluate the scientific capabilities of large language models (LLMs) fail to test these competencies because wet-lab experimentation is prohibitively expensive: in expertise, time and equipment. We introduce SciGym, a first-in-class benchmark that assesses LLMs' iterative experiment design and analysis abilities in open-ended scientific discovery tasks. SciGym overcomes the challenge of wet-lab costs by running a dry lab of biological systems. These models, encoded in Systems Biology Markup Language, are efficient for generating simulated data, making them ideal testbeds for experimentation on realistically complex systems. We evaluated six frontier LLMs on 137 small systems, and released a total of 350 systems. Our evaluation shows that while more capable models demonstrated superior performance, all models' performance declined significantly as system complexity increased, suggesting substantial room for improvement in the scientific capabilities of LLM agents.",
+  "doi": null,
+  "arxiv_id": "2507.02083v2",
+  "url": "https://arxiv.org/abs/2507.02083v2",
+  "pdf_url": "https://arxiv.org/pdf/2507.02083v2",
+  "published_date": "2025-07-02T18:41:44Z",
+  "venue": null,
+  "citations": null,
+  "source": "arxiv",
+  "external_ids": {
+    "arxiv": "2507.02083v2"
+  },
+  "fetched_at": "2026-10-17T11:47:32+00:00",
+  "request": {
+    "arxiv_id": "2507.02083"
+  },
+  "fulltext": {
+    "url": "https://arxiv.org/pdf/2507.02083v2",
+    "parser": "pymupdf 1.28.2",
+    "fetched_at": "2026-10-17T11:47:33+00:00"
+  }
+}
