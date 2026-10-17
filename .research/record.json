@@ -28,37 +28,86 @@
         {
           "id": "s1.p1",
           "node_type": "setup",
-          "quote": "The agent may submit its final model and conclude the discovery process at any point, subject to a maximum iteration limit (20 in our benchmark)."
+          "quote": "The agent may submit its final model and conclude the discovery process at any point, subject to a maximum iteration limit (20 in our benchmark).",
+          "judgments": [
+            {
+              "text_sha256": "8cbbffcb59e477f1fa19d21941dd67881e73dff86ee215e1d78dee013e6dc911",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         },
         {
           "id": "s1.p2",
           "node_type": "setup",
-          "quote": "If the submitted model is invalid or cannot be simulated, we allow for 3 additional debugging iterations before evaluating against the incomplete SBML structure."
+          "quote": "If the submitted model is invalid or cannot be simulated, we allow for 3 additional debugging iterations before evaluating against the incomplete SBML structure.",
+          "judgments": [
+            {
+              "text_sha256": "8cbbffcb59e477f1fa19d21941dd67881e73dff86ee215e1d78dee013e6dc911",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         },
         {
           "id": "s1.p3",
           "node_type": "method",
-          "quote": "We implemented a ReAct-style agent (Yao et al., 2023)using a Thoughts-Actions-Observations framework due to its simplicity for comparing performance across different models."
+          "quote": "We implemented a ReAct-style agent (Yao et al., 2023)using a Thoughts-Actions-Observations framework due to its simplicity for comparing performance across different models.",
+          "judgments": [
+            {
+              "text_sha256": "8cbbffcb59e477f1fa19d21941dd67881e73dff86ee215e1d78dee013e6dc911",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         },
         {
           "id": "s1.p4",
           "node_type": "result",
-          "quote": "Our results show that across all model families, pro variants consistently outperform their mini counterparts, with both lower STE errors and higher RMS scores."
+          "quote": "Our results show that across all model families, pro variants consistently outperform their mini counterparts, with both lower STE errors and higher RMS scores.",
+          "judgments": [
+            {
+              "text_sha256": "971a89ca7d025e91baf6a788ece7c2926fa6c2d600c5f7ffeaf1eb17d05ab28c",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         },
         {
           "id": "s1.p5",
           "node_type": "result",
-          "quote": "GPT-4.1-mini 0.6007"
+          "quote": "GPT-4.1-mini 0.6007",
+          "judgments": [
+            {
+              "text_sha256": "8cbbffcb59e477f1fa19d21941dd67881e73dff86ee215e1d78dee013e6dc911",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         },
         {
           "id": "s1.p6",
           "node_type": "result",
-          "quote": "We report the average Simulation Trajectory Error (STE) and Reaction Matching Score (RMS) across all benchmark instances."
+          "quote": "We report the average Simulation Trajectory Error (STE) and Reaction Matching Score (RMS) across all benchmark instances.",
+          "judgments": [
+            {
+              "text_sha256": "8cbbffcb59e477f1fa19d21941dd67881e73dff86ee215e1d78dee013e6dc911",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         },
         {
           "id": "s1.p7",
           "node_type": "setup",
-          "quote": "small, which contains 137 models with fewer than 10 reactions each"
+          "quote": "small, which contains 137 models with fewer than 10 reactions each",
+          "judgments": [
+            {
+              "text_sha256": "8cbbffcb59e477f1fa19d21941dd67881e73dff86ee215e1d78dee013e6dc911",
+              "model": "gpt-4.1",
+              "supported": true
+            }
+          ]
         }
       ]
     },
