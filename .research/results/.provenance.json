@@ -18,6 +18,25 @@
         ".research/results/react-gpt-4.1-mini/observed.json": "e5183666200e5e9b8a160137091fc5f40d4385b7b6b8cacfd2a03c8e47b59b23",
         ".research/results/react-gpt-4.1-mini/tokens.json": "ff40a26f544185d00f0140f203c0904159a9bb79b009419857ca40f251c299bc"
       }
+    },
+    "react-gpt-4.1-nano": {
+      "execution_id": "cfaec19c-ab5d-4a88-87d7-c68a14f2f0dd",
+      "backend": "seyval",
+      "commit_hash": "0e16b17e01a3f917630dde94f5bab23a449d9d79",
+      "overrides": {
+        "airas_secret_names": "ANTHROPIC_API_KEY,AWS_ACCESS_KEY_ID,AWS_BEARER_TOKEN_BEDROCK,AWS_SECRET_ACCESS_KEY,GEMINI_API_KEY,GH_PERSONAL_ACCESS_TOKEN,HF_TOKEN,NVIDIA_API_KEY,OPENAI_API_KEY,RIKYU_API_KEY,SEYVAL_API_KEY,VERCEL_AI_GATEWAY_API_KEY,WANDB_API_KEY",
+        "run_id": "react-gpt-4.1-nano",
+        "mode": "pilot"
+      },
+      "parameters": {},
+      "files": {
+        ".research/results/react-gpt-4.1-nano/eval_inputs/scigym_small.json.gz": "49158145f94f5c9048dacceae2e66692b9d68b6c5532458fed800ee8a6a5214d",
+        ".research/results/react-gpt-4.1-nano/evaluation/scigym_small.json": "2fb391bac2e89250ed8e0d667d1bc5bdff34e1f8f9349225fa69f6ae916e6095",
+        ".research/results/react-gpt-4.1-nano/instances.tar.gz": "07be3527a6cf385bb4d52e0c4a32fb619f25f5f059f40cd38545de8966aef00c",
+        ".research/results/react-gpt-4.1-nano/metrics.json": "b8f0c07f24052de52c58a34bf8204bc34a35b1f7ae328ae35b12a6bf5aacad9a",
+        ".research/results/react-gpt-4.1-nano/observed.json": "c9021381d2538da7b97dc633c7472756bbb15a1f2768d7882810d25b03a53989",
+        ".research/results/react-gpt-4.1-nano/tokens.json": "8684843ef641a96f6e0cc61f51a5b4c1324b4d591faba7b637ce02324a95cda5"
+      }
     }
   }
 }
