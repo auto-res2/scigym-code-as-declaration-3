@@ -1,0 +1,74 @@
+\PassOptionsToPackage{numbers}{natbib}
+\documentclass{article}
+\usepackage{iclr2024_conference}
+\usepackage{luatexja-fontspec}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\graphicspath{{../}}
+
+\InputIfFileExists{values.tex}{}{}
+\providecommand{\airasval}[1]{\textbf{??airasval:\detokenize{#1}??}}
+\providecommand{\unverified}[1]{#1}
+\providecommand{\airasrecordlink}[1]{#1}
+
+\title{弱い API モデルでの SciGym 公式 ReAct: 判定基準を実験コードで宣言する事前登録の 3 件 pilot}
+\author{AIRAS}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+SciGym \citep{duan-2025-measuring} は、LLM エージェントが摂動実験を要求し、得られた時系列から生物学的系の欠けた反応を SBML として提出するまでを評価するベンチマークであり、論文は上位モデルほど軌道誤差（STE）が低いと報告している。本研究は SciGym 公式の ReAct エージェントを無改変のまま、より安価な openai/gpt-4.1-mini と openai/gpt-4.1-nano で動かし、SciGym-small から等間隔に選んだ 3 件（pilot）で 2 つの主張を実験前に凍結する: nano の平均 STE は mini より低くない（c1）、mini の平均 STE は論文の GPT-4.1-mini の値を 0.10 より大きくは上回らない（c2）。本研究のもう一つの目的は記録の運用の確認にある: 各主張の判定基準は記録の散文ではなく、実験コードの関数に付けた印（\texttt{@claim}）で宣言し、事前登録の道具がそこから記録に写す。3 件の差に統計的な意味はなく、判定は規則どおり導くが解釈しない。
+\end{abstract}
+
+\section{はじめに}
+\label{sec:intro}
+SciGym \citep{duan-2025-measuring} は BioModels 由来の SBML モデルから反応を取り除き、エージェントに初期濃度を変える摂動実験を要求させ、最終的な SBML を提出させる。論文は 3 社の上位版と mini 版の 6 モデルを比べ、どのモデル系列でも上位版が mini 版より STE が低く RMS が高いと報告した \cite[s1.p4]{duan-2025-measuring}。本研究はこの順序が mini 版よりさらに下位のモデルとの間でも保たれるか、また同じ Controller を Vercel AI Gateway 経由の OpenAI 互換アダプタで呼んだとき、mini 版が論文に近い水準を出すかを問う。
+
+AIRAS の事前登録の枠組みでは、仮説・判定基準・予測区間・実行条件を実験前に記録（record.json）へ凍結し、実験後は計測値だけを流し込む。本研究では判定基準（どの run のどの指標を何と比べ、どの線を越えれば支持か）を実験コード \texttt{src/react.py} の \texttt{solve\_instance} に付けた \texttt{@claim(...)} として書き、事前登録の道具がコードを読んで記録に写す。検証の段階では、記録の判定基準とコードの宣言が一致すること、印を付けた関数が各 run で実際に呼ばれたことを機械で照合する。
+
+\section{関連研究}
+\label{sec:related}
+SciGym のエージェントは ReAct 形式（思考・行動・観察）で実装され \cite[s1.p3]{duan-2025-measuring}、提出は任意の時点で行え、反復数の上限は 20 である \cite[s1.p1]{duan-2025-measuring}。提出モデルが無効なら 3 回までのデバッグ反復が許され、それでも無効なら不完全モデルのまま採点される \cite[s1.p2]{duan-2025-measuring}。small split は反応が 10 未満の 137 モデルからなる \cite[s1.p7]{duan-2025-measuring}。論文の Table 1 は全件平均の STE と RMS を報告しており \cite[s1.p6]{duan-2025-measuring}、GPT-4.1-mini の STE は \unverified{0.6007} である \cite[s1.p5]{duan-2025-measuring}。
+
+\section{仮説と予測}
+\label{sec:hypothesis}
+以下は記録から生成された仮説・主張・判定基準・予測区間の一覧である。実験後は Observed と Verdict が計測値から埋められる。
+
+\input{claims.tex}
+
+\paragraph{判定基準と予測区間の根拠.}
+c1 は順序だけを問う（マージン 0）。予測区間は論文の上位版と mini 版の STE の差（GPT で \unverified{0.14}、Gemini で \unverified{0.10}）を目安に $[0, 0.20]$ とした。c2 のマージン 0.10 は、論文の上位版と mini 版の差より小さい悪化までを許す線である。予測区間 $[-0.15, 0.10]$ は、3 件の平均が件の選び方で大きく振れることを見込んだ幅である。
+
+\section{方法}
+\label{sec:method}
+両 run とも SciGym 公式の Controller（h4duan/SciGym @88a7b93 \citep{h4duan-2025-scigym}、無改変）を入口 \texttt{run\_benchmark} \cite[s2.p1]{h4duan-2025-scigym} から呼び、1 件ずつ解かせる。LLM は \texttt{scigym.api.api.LLM} のサブクラスで、Vercel AI Gateway の OpenAI 互換エンドポイントを呼ぶ。反復上限とデバッグ反復は論文と同じ値にし \cite[s1.p1]{duan-2025-measuring}\cite[s1.p2]{duan-2025-measuring}、実験は初期濃度の変更だけである。各 run の設定値は記録の params に凍結されている。採点は airas-eval の評価層 \texttt{scigym\_small}（SciGym 公式 Evaluator）が行い、実験コードは採点の計算を持たない。
+
+\section{実験設定}
+\label{sec:setup}
+SciGym-small の 137 件を id 順に並べ、等間隔に 3 件を選ぶ（2 run で同じ件）。1 件 1 プロセスで実行し、出力が止まった試行は打ち切って最初からやり直す（最大 3 試行）。3 試行とも終わらなかった件は提出なしとして不完全モデルで採点し、平均の分母から除外しない。計算は RIKYU（Seyval の BYO Slurm、aarch64、CPU 1 ノード）で行う。
+
+\paragraph{論文からの逸脱.}
+モデル（論文: GPT-4.1-mini ほか 6 モデル / 本研究: gpt-4.1-mini と gpt-4.1-nano / 理由: 記録の運用を見る研究なので安価なモデルにする）、件数（論文: 137 件 / 本研究: 3 件 / 理由: pilot）、API の経路（論文: 各社 API を直接 / 本研究: Vercel AI Gateway / 理由: 鍵を一つにまとめる）。
+
+% ===== airas: post-experiment sections, filled once runs exist =====
+
+\section{結果}
+\label{sec:results}
+（実験後に記入する。）
+
+\section{考察}
+\label{sec:discussion}
+（実験後に記入する。）
+
+\section*{データの公開}
+記録は \airasrecordlink{record.json} にある。
+
+\bibliographystyle{iclr2024_conference}
+\bibliography{references}
+
+\end{document}
