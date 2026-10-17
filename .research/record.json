@@ -1,1 +1,329 @@
-{}
+{
+  "literature": [
+    {
+      "id": "s1",
+      "title": "Measuring Scientific Capabilities of Language Models with a Systems Biology Dry Lab",
+      "authors": [
+        "Haonan Duan",
+        "Stephen Zhewen Lu",
+        "Caitlin Fiona Harrigan",
+        "Nishkrit Desai",
+        "Jiarui Lu",
+        "Michał Koziarski",
+        "Leonardo Cotta",
+        "Chris J. Maddison"
+      ],
+      "year": 2025,
+      "arxiv_id": "2507.02083v2",
+      "url": "https://arxiv.org/abs/2507.02083v2",
+      "bibkey": "duan-2025-measuring",
+      "verified_by": "arxiv",
+      "verified_at": "2026-10-17T11:47:32+00:00",
+      "fulltext": {
+        "path": ".research/sources/s1/fulltext.txt",
+        "sha256": "da6c8d3dcbbd8c768ee7735346726853026ccc88a9b03d475dc293e347c378fd"
+      },
+      "parser": "pymupdf 1.28.2",
+      "passages": [
+        {
+          "id": "s1.p1",
+          "node_type": "setup",
+          "quote": "The agent may submit its final model and conclude the discovery process at any point, subject to a maximum iteration limit (20 in our benchmark)."
+        },
+        {
+          "id": "s1.p2",
+          "node_type": "setup",
+          "quote": "If the submitted model is invalid or cannot be simulated, we allow for 3 additional debugging iterations before evaluating against the incomplete SBML structure."
+        },
+        {
+          "id": "s1.p3",
+          "node_type": "method",
+          "quote": "We implemented a ReAct-style agent (Yao et al., 2023)using a Thoughts-Actions-Observations framework due to its simplicity for comparing performance across different models."
+        },
+        {
+          "id": "s1.p4",
+          "node_type": "result",
+          "quote": "Our results show that across all model families, pro variants consistently outperform their mini counterparts, with both lower STE errors and higher RMS scores."
+        },
+        {
+          "id": "s1.p5",
+          "node_type": "result",
+          "quote": "GPT-4.1-mini 0.6007"
+        },
+        {
+          "id": "s1.p6",
+          "node_type": "result",
+          "quote": "We report the average Simulation Trajectory Error (STE) and Reaction Matching Score (RMS) across all benchmark instances."
+        },
+        {
+          "id": "s1.p7",
+          "node_type": "setup",
+          "quote": "small, which contains 137 models with fewer than 10 reactions each"
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "h4duan/SciGym",
+      "authors": [
+        "h4duan"
+      ],
+      "year": 2025,
+      "url": "https://github.com/h4duan/SciGym",
+      "bibkey": "h4duan-2025-scigym",
+      "verified_by": "git",
+      "verified_at": "2026-10-17T12:26:12+00:00",
+      "parser": "git show",
+      "repositories": [
+        {
+          "id": "s2.r1",
+          "url": "https://github.com/h4duan/SciGym",
+          "commit": "88a7b93609e35b6ecb4eb343d816d6ff09256c6a",
+          "snapshot": {
+            "path": ".research/sources/s2/r1.txt",
+            "sha256": "f77a27ca8e8d7f67de79b155ca763e4e4eb7e1e02d9b736fd20cf43c3e9e7e75"
+          },
+          "method_entry": "scigym.controller.Controller.run_benchmark"
+        }
+      ],
+      "passages": [
+        {
+          "id": "s2.p1",
+          "node_type": "method",
+          "quote": "def run_benchmark(self, model: LLM) -> None:"
+        }
+      ]
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "h1",
+      "statement": "SciGym 公式の ReAct エージェントを弱い API モデル（gpt-4.1-mini / gpt-4.1-nano）で動かしても、論文の「上位モデルほど STE が低い」という順序が保たれ、gpt-4.1-mini の STE は論文の値から大きく悪化しない。",
+      "assumptions": [
+        "STE（trajectory_smape、SciGym 公式 Evaluator、airas-eval scigym_small）が機構回復の良さを表す（c1, c2）",
+        "上流コード h4duan/SciGym @88a7b93 は論文の Controller を実装している（c1, c2）",
+        "knob の一覧（design の arguments）は、コードから列挙できた範囲を超えて完全である（c1, c2）",
+        "Vercel AI Gateway が返すモデル（openai/gpt-4.1-mini、openai/gpt-4.1-nano）はその名前のモデルであり、gpt-4.1-mini は論文の GPT-4.1-Mini-2025-04-14 と同じ重みである（c1, c2）",
+        "LLM のサンプリングは非決定的であり、1 回の run の差は再現時にずれうる（c1, c2）",
+        "Seyval（RIKYU の BYO Slurm）の実行記録と git 履歴は正しい（c1, c2）",
+        "3 件は 137 件の代表ではない。pilot の目的は record の運用の確認であり、3 件での差が母集団の差を反映するとみなす（c1, c2）"
+      ],
+      "quoted_passage_ids": [
+        "s1.p4",
+        "s1.p5"
+      ],
+      "claims": [
+        {
+          "id": "c1",
+          "statement": "SciGym-small の同じ 3 件で、gpt-4.1-nano の ReAct は gpt-4.1-mini の ReAct より STE が低くない。",
+          "rationale": "論文の上位モデルほどよいという順序（s1.p4）を、さらに下位の nano と mini の対で確かめる。h1 の前半を担う。",
+          "verifier": {
+            "kind": "seyval"
+          },
+          "designs": [
+            {
+              "id": "d1",
+              "summary": "SciGym 公式 Controller（scigym.controller.Controller.run_benchmark、無改変）で SciGym-small の件を解かせ、提出 SBML を評価層 scigym_small（airas-eval が公式 Evaluator を呼ぶ）で採点する。件は Hugging Face の h4duan/scigym-sbml（split small、137 件、s1.p7）を run 時に取得し、id 順に並べて等間隔に 3 件（n_instances=3、pilot。2 run で同じ件）。リビジョンは固定しない。LLM は openai/gpt-4.1-nano を Vercel AI Gateway 経由で呼ぶ OpenAI 互換アダプタ（scigym.api.api.LLM のサブクラス src.react.OpenAICompatible。空の本文は finish_reason=length なら max_tokens を倍にして呼び直し、それ以外は reasoning 欄を本文として使う。接続エラーと 5xx は 60 秒待って最大 30 回、402 は run を止め、文脈超過は提出なしとして数える）。max_iterations=20（s1.p1）、eval_debug_rounds=3（s1.p2）、temperature=1.0、max_length=32768、実験は初期濃度の変更のみ（公式 prompts/experiment_actions_perturb.md）。1 件 1 プロセス（python -m src.train）。件のプロセスが instance_timeout を超えるか stall_timeout の間出力が止まったら kill して最初からやり直し、API エラーで tokens.json が出なかった件も含めて最大 3 試行。3 試行とも終わらなかった件は提出なしとして評価層に渡し、不完全モデルで採点する（平均の分母から除外しない）。採点は src/ の外（Makefile の evaluate 段）。src/evaluate.py は評価レポートの指標に実験側のトークン数と実験回数を添えて metrics.json に写すだけ。criterion は src/react.py の solve_instance に付けた @claim(...) が宣言し、preregister_record がそこから record に写す。論文からの逸脱: paper: GPT-4.1-mini ほか 6 モデル / here: openai/gpt-4.1-nano / why: record の運用を見る研究なので安価なモデルにする（ユーザー指定）。paper: small 137 件 / here: 等間隔 3 件 / why: pilot。paper: 各社 API を直接 / here: Vercel AI Gateway 経由 / why: 鍵を 1 つにまとめる。",
+              "runs": [
+                {
+                  "run_id": "react-gpt-4.1-nano",
+                  "description": "SciGym 公式 Controller（ReAct）+ openai/gpt-4.1-nano（Vercel AI Gateway）で SciGym-small の等間隔 3 件を解く",
+                  "params": {
+                    "mode": "pilot",
+                    "results_dir": ".research/results",
+                    "data_root": "data/scigym_sbml",
+                    "src.preprocess.instances.split": "small",
+                    "src.preprocess.instances.n_instances": 3,
+                    "scigym.api.api.LLM.__init__.model_name": "openai/gpt-4.1-nano",
+                    "scigym.controller.Controller.__init__.max_iterations": 20,
+                    "scigym.controller.Controller.__init__.eval_debug_rounds": 3,
+                    "scigym.controller.Controller.__init__.temperature": 1,
+                    "scigym.api.api.LLM.__init__.temperature": 1,
+                    "scigym.api.api.LLM.__init__.max_length": 32768,
+                    "openai._client.OpenAI.__init__.base_url": "https://ai-gateway.vercel.sh/v1",
+                    "src.runner.run_all.workers": 3,
+                    "src.runner.run_all.instance_timeout": 7200,
+                    "src.runner.run_all.stall_timeout": 1800
+                  }
+                }
+              ],
+              "quoted_passage_ids": [
+                "s1.p1",
+                "s1.p2",
+                "s1.p3",
+                "s1.p7"
+              ],
+              "repository_integration": {
+                "repository_id": "s2.r1",
+                "arguments": [
+                  "src.preprocess.instances.split",
+                  "src.preprocess.instances.n_instances",
+                  "scigym.api.api.LLM.__init__.model_name",
+                  "scigym.controller.Controller.__init__.max_iterations",
+                  "scigym.controller.Controller.__init__.eval_debug_rounds",
+                  "scigym.controller.Controller.__init__.temperature",
+                  "scigym.api.api.LLM.__init__.temperature",
+                  "scigym.api.api.LLM.__init__.max_length",
+                  "openai._client.OpenAI.__init__.base_url",
+                  "src.runner.run_all.workers",
+                  "src.runner.run_all.instance_timeout",
+                  "src.runner.run_all.stall_timeout"
+                ],
+                "extension_points": [
+                  "scigym.api.api.LLM"
+                ]
+              }
+            }
+          ],
+          "quoted_passage_ids": [
+            "s1.p4"
+          ],
+          "criterion": {
+            "metric": "trajectory_smape",
+            "subject": "react-gpt-4.1-nano",
+            "reference": "react-gpt-4.1-mini",
+            "op": ">="
+          },
+          "prediction": {
+            "low": 0.0,
+            "high": 0.2,
+            "basis": "論文 Table 1 の上位版と mini 版の STE の差（GPT 0.4611 vs 0.6007 で 0.14、Gemini 0.3212 vs 0.4181 で 0.10、s1.p4）。3 件なので幅を広く取る"
+          }
+        },
+        {
+          "id": "c2",
+          "statement": "SciGym-small の 3 件で、gpt-4.1-mini の ReAct の STE は論文 Table 1 の GPT-4.1-mini の値（0.6007）を 0.10 より大きくは上回らない。",
+          "rationale": "同じ Controller・同じ設定で論文の数値に近い水準が出ることは、アダプタ（Vercel 経由の OpenAI 互換 LLM）が公式の手順を保っている証拠になり、h1 の後半を担う。c1 の参照 run でもある。",
+          "verifier": {
+            "kind": "seyval"
+          },
+          "designs": [
+            {
+              "id": "d1",
+              "summary": "SciGym 公式 Controller（scigym.controller.Controller.run_benchmark、無改変）で SciGym-small の件を解かせ、提出 SBML を評価層 scigym_small（airas-eval が公式 Evaluator を呼ぶ）で採点する。件は Hugging Face の h4duan/scigym-sbml（split small、137 件、s1.p7）を run 時に取得し、id 順に並べて等間隔に 3 件（n_instances=3、pilot。2 run で同じ件）。リビジョンは固定しない。LLM は openai/gpt-4.1-mini を Vercel AI Gateway 経由で呼ぶ OpenAI 互換アダプタ（scigym.api.api.LLM のサブクラス src.react.OpenAICompatible。空の本文は finish_reason=length なら max_tokens を倍にして呼び直し、それ以外は reasoning 欄を本文として使う。接続エラーと 5xx は 60 秒待って最大 30 回、402 は run を止め、文脈超過は提出なしとして数える）。max_iterations=20（s1.p1）、eval_debug_rounds=3（s1.p2）、temperature=1.0、max_length=32768、実験は初期濃度の変更のみ（公式 prompts/experiment_actions_perturb.md）。1 件 1 プロセス（python -m src.train）。件のプロセスが instance_timeout を超えるか stall_timeout の間出力が止まったら kill して最初からやり直し、API エラーで tokens.json が出なかった件も含めて最大 3 試行。3 試行とも終わらなかった件は提出なしとして評価層に渡し、不完全モデルで採点する（平均の分母から除外しない）。採点は src/ の外（Makefile の evaluate 段）。src/evaluate.py は評価レポートの指標に実験側のトークン数と実験回数を添えて metrics.json に写すだけ。criterion は src/react.py の solve_instance に付けた @claim(...) が宣言し、preregister_record がそこから record に写す。論文からの逸脱: paper: GPT-4.1-mini ほか 6 モデル / here: openai/gpt-4.1-mini / why: record の運用を見る研究なので安価なモデルにする（ユーザー指定）。paper: small 137 件 / here: 等間隔 3 件 / why: pilot。paper: 各社 API を直接 / here: Vercel AI Gateway 経由 / why: 鍵を 1 つにまとめる。",
+              "runs": [
+                {
+                  "run_id": "react-gpt-4.1-mini",
+                  "description": "SciGym 公式 Controller（ReAct）+ openai/gpt-4.1-mini（Vercel AI Gateway）で SciGym-small の等間隔 3 件を解く",
+                  "params": {
+                    "mode": "pilot",
+                    "results_dir": ".research/results",
+                    "data_root": "data/scigym_sbml",
+                    "src.preprocess.instances.split": "small",
+                    "src.preprocess.instances.n_instances": 3,
+                    "scigym.api.api.LLM.__init__.model_name": "openai/gpt-4.1-mini",
+                    "scigym.controller.Controller.__init__.max_iterations": 20,
+                    "scigym.controller.Controller.__init__.eval_debug_rounds": 3,
+                    "scigym.controller.Controller.__init__.temperature": 1,
+                    "scigym.api.api.LLM.__init__.temperature": 1,
+                    "scigym.api.api.LLM.__init__.max_length": 32768,
+                    "openai._client.OpenAI.__init__.base_url": "https://ai-gateway.vercel.sh/v1",
+                    "src.runner.run_all.workers": 3,
+                    "src.runner.run_all.instance_timeout": 7200,
+                    "src.runner.run_all.stall_timeout": 1800
+                  }
+                }
+              ],
+              "quoted_passage_ids": [
+                "s1.p1",
+                "s1.p2",
+                "s1.p3",
+                "s1.p7"
+              ],
+              "repository_integration": {
+                "repository_id": "s2.r1",
+                "arguments": [
+                  "src.preprocess.instances.split",
+                  "src.preprocess.instances.n_instances",
+                  "scigym.api.api.LLM.__init__.model_name",
+                  "scigym.controller.Controller.__init__.max_iterations",
+                  "scigym.controller.Controller.__init__.eval_debug_rounds",
+                  "scigym.controller.Controller.__init__.temperature",
+                  "scigym.api.api.LLM.__init__.temperature",
+                  "scigym.api.api.LLM.__init__.max_length",
+                  "openai._client.OpenAI.__init__.base_url",
+                  "src.runner.run_all.workers",
+                  "src.runner.run_all.instance_timeout",
+                  "src.runner.run_all.stall_timeout"
+                ],
+                "extension_points": [
+                  "scigym.api.api.LLM"
+                ]
+              }
+            }
+          ],
+          "quoted_passage_ids": [
+            "s1.p5",
+            "s1.p6"
+          ],
+          "criterion": {
+            "metric": "trajectory_smape",
+            "subject": "react-gpt-4.1-mini",
+            "reference": 0.6007,
+            "op": "<=",
+            "margin": 0.1,
+            "quoted_passage_ids": [
+              "s1.p5"
+            ]
+          },
+          "prediction": {
+            "low": -0.15,
+            "high": 0.1,
+            "basis": "論文 Table 1 の GPT-4.1-mini の平均 STE 0.6007（s1.p5、137 件の平均）。3 件の平均は件の選び方で大きく振れるので幅を広く取る"
+          }
+        }
+      ],
+      "tables": [
+        {
+          "key": "main",
+          "caption": "SciGym-small から等間隔に選んだ 3 件（pilot）での比較。STE は低いほど、RMS / NTS は高いほどよい。",
+          "columns": [
+            {
+              "header": "STE $\\downarrow$",
+              "ref_path": "trajectory_smape",
+              "round": 4
+            },
+            {
+              "header": "RMS F1",
+              "ref_path": "reaction_f1",
+              "round": 4
+            },
+            {
+              "header": "NTS F1",
+              "ref_path": "topology_f1",
+              "round": 4
+            },
+            {
+              "header": "valid subm.",
+              "ref_path": "n_valid_submissions",
+              "round": 0
+            },
+            {
+              "header": "mean exp.",
+              "ref_path": "mean_experiments",
+              "round": 1
+            }
+          ],
+          "rows": [
+            {
+              "run_id": "react-gpt-4.1-mini",
+              "label": "ReAct (gpt-4.1-mini)"
+            },
+            {
+              "run_id": "react-gpt-4.1-nano",
+              "label": "ReAct (gpt-4.1-nano)"
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "目的: 実験の中身ではなく、seyval claim の criterion を record の散文ではなく実験コード（src/react.py の @claim）で宣言する運用（airas の作業ツリーの spike）が、文献取得から pilot まで回るかを見る。",
+        "c1 と c2 の criterion は design.json に書かず、src/react.py の solve_instance に付けた @claim から preregister_record が写す。c1 の reference は c2 の run（react-gpt-4.1-mini）。",
+        "判定線の理由: c1 は順序だけを問う（margin 0）。c2 の 0.10 は論文の pro と mini の差（0.10〜0.14）より小さい悪化までを許す線。",
+        "計算資源: RIKYU（Seyval BYO Slurm、aarch64、cpu-general、1 ノード）。LLM は Vercel AI Gateway。",
+        "run と claim の対応: react-gpt-4.1-nano → c1、react-gpt-4.1-mini → c2（c1 の参照）。",
+        "design ⇄ sanity の往復は 2 回。1 回目（RIKYU sanity f2d7609b）は datasets の import で落ちた: lock が pyarrow 26.0.0 を引き、26 は NumPy 2 を要求するが SciGym 側で NumPy は 1.26.4 に固定される。pyarrow を 25.0.1 に固定した（設計は変えていない）。2 回目（RIKYU sanity e0d28ac7、e88c61e）は 1 件 2 反復で SANITY_VALIDATION: PASS。ローカルの sanity で observed.json を読み、run の設定は全て src/ の関数か上流（Controller.__init__、LLM.__init__、OpenAI.__init__）の引数として観測されていることを確かめた。"
+      ]
+    }
+  ]
+}
