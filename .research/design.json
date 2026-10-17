@@ -254,7 +254,8 @@
     "c1 と c2 の criterion は design.json に書かず、src/react.py の solve_instance に付けた @claim から preregister_record が写す。c1 の reference は c2 の run（react-gpt-4.1-mini）。",
     "判定線の理由: c1 は順序だけを問う（margin 0）。c2 の 0.10 は論文の pro と mini の差（0.10〜0.14）より小さい悪化までを許す線。",
     "計算資源: RIKYU（Seyval BYO Slurm、aarch64、cpu-general、1 ノード）。LLM は Vercel AI Gateway。",
-    "run と claim の対応: react-gpt-4.1-nano → c1、react-gpt-4.1-mini → c2（c1 の参照）。"
+    "run と claim の対応: react-gpt-4.1-nano → c1、react-gpt-4.1-mini → c2（c1 の参照）。",
+    "design ⇄ sanity の往復は 2 回。1 回目（RIKYU sanity f2d7609b）は datasets の import で落ちた: lock が pyarrow 26.0.0 を引き、26 は NumPy 2 を要求するが SciGym 側で NumPy は 1.26.4 に固定される。pyarrow を 25.0.1 に固定した（設計は変えていない）。2 回目（RIKYU sanity e0d28ac7、e88c61e）は 1 件 2 反復で SANITY_VALIDATION: PASS。ローカルの sanity で observed.json を読み、run の設定は全て src/ の関数か上流（Controller.__init__、LLM.__init__、OpenAI.__init__）の引数として観測されていることを確かめた。"
    ]
   }
  ]
