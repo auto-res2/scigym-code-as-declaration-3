@@ -2,16 +2,6 @@
  "literature": [
   {
    "source_id": "s1",
-   "repositories": [
-    {
-     "url": "https://github.com/h4duan/SciGym",
-     "commit": "88a7b93609e35b6ecb4eb343d816d6ff09256c6a",
-     "files": [
-      "scigym"
-     ],
-     "method_entry": "scigym.controller.Controller.run_benchmark"
-    }
-   ],
    "passages": [
     {
      "node_type": "setup",
@@ -40,6 +30,24 @@
     {
      "node_type": "setup",
      "quote": "small, which contains 137 models with fewer than 10 reactions each"
+    }
+   ]
+  },
+  {
+   "repositories": [
+    {
+     "url": "https://github.com/h4duan/SciGym",
+     "commit": "88a7b93609e35b6ecb4eb343d816d6ff09256c6a",
+     "files": [
+      "scigym"
+     ],
+     "method_entry": "scigym.controller.Controller.run_benchmark"
+    }
+   ],
+   "passages": [
+    {
+     "node_type": "method",
+     "quote": "def run_benchmark(self, model: LLM) -> None:"
     }
    ]
   }
@@ -88,7 +96,7 @@
         "s1.p7"
        ],
        "repository_integration": {
-        "repository_id": "s1.r1",
+        "repository_id": "s2.r1",
         "arguments": [
          "src.preprocess.instances.split",
          "src.preprocess.instances.n_instances",
@@ -160,7 +168,7 @@
         "s1.p7"
        ],
        "repository_integration": {
-        "repository_id": "s1.r1",
+        "repository_id": "s2.r1",
         "arguments": [
          "src.preprocess.instances.split",
          "src.preprocess.instances.n_instances",
