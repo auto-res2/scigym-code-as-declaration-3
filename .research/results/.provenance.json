@@ -1,0 +1,23 @@
+{
+  "dirs": {
+    "react-gpt-4.1-mini": {
+      "execution_id": "251c0dec-2d4d-4bc5-bb78-250e89b6458e",
+      "backend": "seyval",
+      "commit_hash": "0e16b17e01a3f917630dde94f5bab23a449d9d79",
+      "overrides": {
+        "airas_secret_names": "ANTHROPIC_API_KEY,AWS_ACCESS_KEY_ID,AWS_BEARER_TOKEN_BEDROCK,AWS_SECRET_ACCESS_KEY,GEMINI_API_KEY,GH_PERSONAL_ACCESS_TOKEN,HF_TOKEN,NVIDIA_API_KEY,OPENAI_API_KEY,RIKYU_API_KEY,SEYVAL_API_KEY,VERCEL_AI_GATEWAY_API_KEY,WANDB_API_KEY",
+        "run_id": "react-gpt-4.1-mini",
+        "mode": "pilot"
+      },
+      "parameters": {},
+      "files": {
+        ".research/results/react-gpt-4.1-mini/eval_inputs/scigym_small.json.gz": "00db57304fae4c5d4d4dbf53b2416db532c8d40e8d672d0583dfab2556ca2af2",
+        ".research/results/react-gpt-4.1-mini/evaluation/scigym_small.json": "e471288698c569b93ba955720e1ad38df55a0415a614a40f01d533b4b17d81b1",
+        ".research/results/react-gpt-4.1-mini/instances.tar.gz": "e982fc07e26832eeba168a9f22b3fe61e023c43e82d90d6d0109f19286cb3ba1",
+        ".research/results/react-gpt-4.1-mini/metrics.json": "d6be953d26e4a4cfa88f535802831a36c74fb4751e50bb25c116291cddc3d2fb",
+        ".research/results/react-gpt-4.1-mini/observed.json": "e5183666200e5e9b8a160137091fc5f40d4385b7b6b8cacfd2a03c8e47b59b23",
+        ".research/results/react-gpt-4.1-mini/tokens.json": "ff40a26f544185d00f0140f203c0904159a9bb79b009419857ca40f251c299bc"
+      }
+    }
+  }
+}
