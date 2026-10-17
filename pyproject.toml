@@ -6,6 +6,7 @@ dependencies = [
     "pyyaml==6.0.2",
     "datasets>=3.0",  # SciGym のデータを HuggingFace から取る
     "openai>=1.30",
+    "pyarrow==25.0.1",  # datasets が使う。26 は NumPy 2 を要求するが、SciGym 側で NumPy は 1.26 に固定される
 ]
 
 # `src/` is run with `uv run python -m src.main` from the repository root,
